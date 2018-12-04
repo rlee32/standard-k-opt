@@ -41,7 +41,7 @@ inline std::ostream& operator<<(std::ostream& out, const Optimizer& optimizer)
         out << "\t" << s.a << "\t" << s.b << "\n";
     }
     out << "\tOld length: " << optimizer.best().length << "\n";
-    out << "\tImprovment: " << optimizer.best().improvement << "\n";
+    out << "\tImprovement: " << optimizer.best().improvement << "\n";
     return out;
 }
 

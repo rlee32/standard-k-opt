@@ -5,7 +5,7 @@ PointSequence::PointSequence(const std::vector<primitives::point_id_t>& sequence
     m_adjacents.resize(sequence.size());
     for (auto& a : m_adjacents)
     {
-        a = {m_invalid_point, m_invalid_point};
+        a = {primitives::InvalidPoint, primitives::InvalidPoint};
     }
     auto prev = sequence.back();
     for (auto p : sequence)
@@ -62,11 +62,11 @@ void PointSequence::create_adjacency(primitives::point_id_t point1, primitives::
 }
 void PointSequence::fill_adjacent(primitives::point_id_t point, primitives::point_id_t new_adjacent)
 {
-    if (m_adjacents[point].front() == m_invalid_point)
+    if (m_adjacents[point].front() == primitives::InvalidPoint)
     {
         m_adjacents[point].front() = new_adjacent;
     }
-    else if (m_adjacents[point].back() == m_invalid_point)
+    else if (m_adjacents[point].back() == primitives::InvalidPoint)
     {
         m_adjacents[point].back() = new_adjacent;
     }
@@ -78,11 +78,49 @@ void PointSequence::break_adjacency(primitives::point_id_t point1, primitives::p
     vacate_adjacent_slot(point2, point1, 1);
     vacate_adjacent_slot(point2, point1, 1);
 }
+
 void PointSequence::vacate_adjacent_slot(primitives::point_id_t point, primitives::point_id_t adjacent, int slot)
 {
     if (m_adjacents[point][slot] == adjacent)
     {
-        m_adjacents[point][slot] = m_invalid_point;
+        m_adjacents[point][slot] = primitives::InvalidPoint;
     }
+}
+
+void PointSequence::align(std::unordered_set<Segment, Segment::Hash>& segments) const
+{
+    std::vector<Segment> reverse;
+    for (auto& s : segments)
+    {
+        if (s.a == m_next[s.b])
+        {
+            reverse.push_back(s);
+        }
+    }
+    for (const auto& s : reverse)
+    {
+        segments.erase(s);
+    }
+    for (auto& s : reverse)
+    {
+        std::swap(s.a, s.b);
+        segments.insert(s);
+    }
+}
+
+void PointSequence::new_tour(std::unordered_set<Segment, Segment::Hash>& segments
+    , const std::vector<Segment>& old_segments, const std::vector<Segment>& new_segments)
+{
+    for (const auto& s : old_segments)
+    {
+        segments.erase(s);
+    }
+    for (const auto& s : new_segments)
+    {
+        segments.insert(s);
+    }
+    reorder(old_segments, new_segments);
+    update_next();
+    align(segments);
 }
 
