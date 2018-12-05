@@ -2,5 +2,5 @@
 *.tsp
 data/*
 *.o
-k-opt.out
+2-opt.out
 *.dSYM
