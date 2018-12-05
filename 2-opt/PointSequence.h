@@ -30,7 +30,7 @@ private:
 
     void update_next();
     void reorder(const std::vector<Segment>& old_segments, const std::vector<Segment>& new_segments);
-    void align(Segment::Container& segments) const;
+    void align(Segment::Container&) const;
     primitives::point_id_t get_other(primitives::point_id_t point, primitives::point_id_t adjacent) const;
     void create_adjacency(primitives::point_id_t point1, primitives::point_id_t point2);
     void fill_adjacent(primitives::point_id_t point, primitives::point_id_t new_adjacent);
