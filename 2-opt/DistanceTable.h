@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 #include <vector>
 
 class DistanceTable
@@ -12,6 +13,7 @@ public:
     DistanceTable(const std::vector<primitives::space_t>& x, const std::vector<primitives::space_t>& y)
         : m_x(x), m_y(y)
     {
+        std::cout << "Computing distance table...";
         auto point_count = m_x.size();
         m_table.resize(point_count - 1);
         for (primitives::point_id_t i{0}; i < m_table.size(); ++i)
@@ -23,6 +25,7 @@ public:
                 m_table[i][j - first_j] = compute_euc2d(i, j);
             }
         }
+        std::cout << " done.\n";
     }
 
     primitives::length_t lookup_length(primitives::point_id_t a, primitives::point_id_t b) const

@@ -6,7 +6,7 @@
 #include "Segment.h"
 #include "primitives.h"
 
-#include <algorithm>
+#include <algorithm> // find
 #include <vector>
 
 struct SearchState

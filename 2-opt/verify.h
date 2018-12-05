@@ -92,5 +92,4 @@ void probe(const Segment::Container& segments, primitives::point_id_t point)
     }
 }
 
-
 } // namespace verify

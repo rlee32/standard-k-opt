@@ -19,7 +19,6 @@ public:
     Optimizer(const DistanceTable& dt) : m_dt(dt) {}
 
     void find_best(const SegmentContainer& segments);
-    void find_best(SegmentContainer::const_iterator it, const SegmentContainer::const_iterator end);
 
     const SearchState& best() const { return m_best; }
 
@@ -30,6 +29,7 @@ private:
     SearchState m_best;
     SearchState m_current;
 
+    void find_best(SegmentContainer::const_iterator it, const SegmentContainer::const_iterator end);
     void check_best();
 };
 

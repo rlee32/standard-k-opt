@@ -32,11 +32,12 @@ int main(int argc, char** argv)
             tour.push_back(i);
         }
     }
-    // Initialize segments.
+    // Initialize distance table.
     PointSequence point_sequence(tour);
+    DistanceTable dt(point_set.x(), point_set.y());
+    // Initialize segments.
     const auto& next = point_sequence.next();
     std::unordered_set<Segment, Segment::Hash> segments;
-    DistanceTable dt(point_set.x(), point_set.y());
     for (auto id : tour)
     {
         auto length = dt.lookup_length(id, next[id]);
