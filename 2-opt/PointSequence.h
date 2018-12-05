@@ -21,9 +21,6 @@ public:
         , const std::vector<Segment>& old_segments
         , const std::vector<Segment>& new_segments);
 
-    // Maintenance.
-    void update_next();
-
     // Mainly for debugging.
     const std::vector<primitives::point_id_t>& next() const { return m_next; }
     const std::vector<Adjacents>& adjacents() const { return m_adjacents; }
@@ -32,6 +29,7 @@ private:
     std::vector<Adjacents> m_adjacents;
     std::vector<primitives::point_id_t> m_next;
 
+    void update_next();
     void reorder(const std::vector<Segment>& old_segments, const std::vector<Segment>& new_segments);
     void align(std::unordered_set<Segment, Segment::Hash>& segments) const;
     primitives::point_id_t get_other(primitives::point_id_t point, primitives::point_id_t adjacent) const;

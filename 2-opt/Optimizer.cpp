@@ -1,15 +1,16 @@
 #include "Optimizer.h"
 
-void Optimizer::find_best(const std::vector<Segment>& segments)
+void Optimizer::find_best(const SegmentContainer& segments)
 {
+    m_best = SearchState();
     for (auto it = segments.cbegin(); it != segments.cend(); ++it)
     {
         m_current = SearchState(*it);
-        find_best(it + 1, segments.cend());
+        find_best(std::next(it), segments.cend());
     }
 }
 
-void Optimizer::find_best(std::vector<Segment>::const_iterator it, const std::vector<Segment>::const_iterator end)
+void Optimizer::find_best(SegmentContainer::const_iterator it, const SegmentContainer::const_iterator end)
 {
     while (it != end)
     {
@@ -37,13 +38,16 @@ void Optimizer::check_best()
     // TODO: implement for m_k > 2.
     // TODO: distance table.
     const auto& s = m_current.segments;
-    primitives::length_t new_length = distance_functions::euc2d(m_x, m_y, s[0].a, s[1].a);
-    if (new_length > m_current.length)
+    auto& ns = m_current.new_segments;
+    ns.clear();
+    ns.push_back({s[0].a, s[1].a, m_dt.lookup_length(s[0].a, s[1].a)});
+    if (ns[0].length >= m_current.length)
     {
         return;
     }
-    new_length += distance_functions::euc2d(m_x, m_y, s[0].b, s[1].b);
-    if (new_length > m_current.length)
+    ns.push_back({s[0].b, s[1].b, m_dt.lookup_length(s[0].b, s[1].b)});
+    auto new_length = ns[0].length + ns[1].length;
+    if (new_length >= m_current.length)
     {
         return;
     }

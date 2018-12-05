@@ -21,6 +21,7 @@ struct SearchState
     std::vector<primitives::point_id_t> points;
     primitives::length_t length{0};
     primitives::length_t improvement{0};
+    std::vector<Segment> new_segments;
 
     bool valid(const Segment& s) const
     {

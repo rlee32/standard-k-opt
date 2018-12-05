@@ -36,6 +36,16 @@ void PointSequence::reorder(const std::vector<Segment>& old_segments, const std:
     {
         break_adjacency(s.a, s.b);
     }
+    for (const auto& s : old_segments)
+    {
+        std::cout << "Broken points and neighbors:" << std::endl;
+        std::cout << s.a
+            << " " << m_adjacents[s.a][0]
+            << " " << m_adjacents[s.a][1] << std::endl;
+        std::cout << s.b
+            << " " << m_adjacents[s.b][0]
+            << " " << m_adjacents[s.b][1] << std::endl;
+    }
     // form new segments.
     for (const auto& s : new_segments)
     {
@@ -74,8 +84,8 @@ void PointSequence::fill_adjacent(primitives::point_id_t point, primitives::poin
 void PointSequence::break_adjacency(primitives::point_id_t point1, primitives::point_id_t point2)
 {
     vacate_adjacent_slot(point1, point2, 0);
-    vacate_adjacent_slot(point1, point2, 0);
-    vacate_adjacent_slot(point2, point1, 1);
+    vacate_adjacent_slot(point1, point2, 1);
+    vacate_adjacent_slot(point2, point1, 0);
     vacate_adjacent_slot(point2, point1, 1);
 }
 
@@ -113,13 +123,33 @@ void PointSequence::new_tour(std::unordered_set<Segment, Segment::Hash>& segment
 {
     for (const auto& s : old_segments)
     {
-        segments.erase(s);
+        auto erased = segments.erase(s);
+        if (erased != 1)
+        {
+            std::cout << "ERROR: " << erased << " segments were erased (should only be 1)." << std::endl;
+        }
     }
     for (const auto& s : new_segments)
     {
-        segments.insert(s);
+        auto pair = segments.insert(s);
+        if (not pair.second)
+        {
+            std::cout << "ERROR: could not insert segment!" << std::endl;
+        }
     }
     reorder(old_segments, new_segments);
+    /*
+    for (const auto& s : new_segments)
+    {
+        std::cout << "New segment points and neighbors:" << std::endl;
+        std::cout << s.a
+            << " " << m_adjacents[s.a][0]
+            << " " << m_adjacents[s.a][1] << std::endl;
+        std::cout << s.b
+            << " " << m_adjacents[s.b][0]
+            << " " << m_adjacents[s.b][1] << std::endl;
+    }
+    */
     update_next();
     align(segments);
 }
