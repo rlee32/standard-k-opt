@@ -36,16 +36,6 @@ void PointSequence::reorder(const std::vector<Segment>& old_segments, const std:
     {
         break_adjacency(s.a, s.b);
     }
-    for (const auto& s : old_segments)
-    {
-        std::cout << "Broken points and neighbors:" << std::endl;
-        std::cout << s.a
-            << " " << m_adjacents[s.a][0]
-            << " " << m_adjacents[s.a][1] << std::endl;
-        std::cout << s.b
-            << " " << m_adjacents[s.b][0]
-            << " " << m_adjacents[s.b][1] << std::endl;
-    }
     // form new segments.
     for (const auto& s : new_segments)
     {
@@ -138,18 +128,6 @@ void PointSequence::new_tour(std::unordered_set<Segment, Segment::Hash>& segment
         }
     }
     reorder(old_segments, new_segments);
-    /*
-    for (const auto& s : new_segments)
-    {
-        std::cout << "New segment points and neighbors:" << std::endl;
-        std::cout << s.a
-            << " " << m_adjacents[s.a][0]
-            << " " << m_adjacents[s.a][1] << std::endl;
-        std::cout << s.b
-            << " " << m_adjacents[s.b][0]
-            << " " << m_adjacents[s.b][1] << std::endl;
-    }
-    */
     update_next();
     align(segments);
 }

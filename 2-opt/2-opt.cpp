@@ -48,29 +48,43 @@ int main(int argc, char** argv)
     std::cout << "Initial tour length: " << prev_length << std::endl;
     int iteration{0};
     primitives::length_t improvement{1};
+    constexpr bool debug_mode{false};
+    constexpr int print_period{10};
     while (improvement > 0)
     {
         optimizer.find_best(segments);
-        std::cout << optimizer << std::endl;
         point_sequence.new_tour(segments, optimizer.best().segments, optimizer.best().new_segments);
-        if (verify::valid_cycle(segments))
+        if (debug_mode)
         {
-            std::cout << "Tour is still a valid cycle." << std::endl;
+            std::cout << optimizer << std::endl;
+            if (verify::valid_cycle(segments))
+            {
+                std::cout << "Tour is still a valid cycle." << std::endl;
+            }
+            else
+            {
+                std::cout << "ERROR: tour has become invalid!" << std::endl;
+                break;
+            }
         }
-        else
+        if (iteration % print_period == 0)
         {
-            std::cout << "ERROR: tour has become invalid!" << std::endl;
-            break;
+            auto current_length = verify::tour_length(segments, dt);
+            improvement = prev_length - current_length;
+            std::cout << "Iteration " << iteration
+                << " final tour length: " << current_length
+                << " (improvement since last update: " << improvement << ")\n";
+            prev_length = current_length;
         }
-        auto current_length = verify::tour_length(segments, dt);
-        improvement = prev_length - current_length;
-        std::cout << "Iteration " << iteration
-            << " final tour length: " << current_length
-            << " (step improvement: " << improvement << ")"
-            << std::endl;
         ++iteration;
-        prev_length = current_length;
     }
-    std::cout << "Local optimum reached." << std::endl;
+    if (improvement == 0)
+    {
+        std::cout << "Local optimum reached." << std::endl;
+    }
+    else
+    {
+        std::cout << "Hill-climbing optimization prematurely stopped." << std::endl;
+    }
     return 0;
 }
