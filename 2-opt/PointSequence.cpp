@@ -87,7 +87,7 @@ void PointSequence::vacate_adjacent_slot(primitives::point_id_t point, primitive
     }
 }
 
-void PointSequence::align(std::unordered_set<Segment, Segment::Hash>& segments) const
+void PointSequence::align(Segment::Container& segments) const
 {
     std::vector<Segment> reverse;
     for (auto& s : segments)
@@ -108,7 +108,7 @@ void PointSequence::align(std::unordered_set<Segment, Segment::Hash>& segments) 
     }
 }
 
-void PointSequence::new_tour(std::unordered_set<Segment, Segment::Hash>& segments
+void PointSequence::new_tour(Segment::Container& segments
     , const std::vector<Segment>& old_segments, const std::vector<Segment>& new_segments)
 {
     for (const auto& s : old_segments)

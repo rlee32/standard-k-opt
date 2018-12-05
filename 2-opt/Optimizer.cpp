@@ -1,6 +1,6 @@
 #include "Optimizer.h"
 
-void Optimizer::find_best(const SegmentContainer& segments)
+void Optimizer::find_best(const Segment::Container& segments)
 {
     m_best = SearchState();
     for (auto it = segments.cbegin(); it != segments.cend(); ++it)
@@ -10,7 +10,7 @@ void Optimizer::find_best(const SegmentContainer& segments)
     }
 }
 
-void Optimizer::find_best(SegmentContainer::const_iterator it, const SegmentContainer::const_iterator end)
+void Optimizer::find_best(Segment::Container::const_iterator it, const Segment::Container::const_iterator end)
 {
     while (it != end)
     {
@@ -36,7 +36,6 @@ void Optimizer::find_best(SegmentContainer::const_iterator it, const SegmentCont
 void Optimizer::check_best()
 {
     // TODO: implement for m_k > 2.
-    // TODO: distance table.
     const auto& s = m_current.segments;
     auto& ns = m_current.new_segments;
     ns.clear();

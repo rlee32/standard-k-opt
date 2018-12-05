@@ -1,6 +1,7 @@
 #include "DistanceTable.h"
 #include "Optimizer.h"
 #include "PointSequence.h"
+#include "Segment.h"
 #include "fileio/PointSet.h"
 #include "fileio/Tour.h"
 #include "primitives.h"
@@ -37,7 +38,7 @@ int main(int argc, char** argv)
     DistanceTable dt(point_set.x(), point_set.y());
     // Initialize segments.
     const auto& next = point_sequence.next();
-    std::unordered_set<Segment, Segment::Hash> segments;
+    Segment::Container segments;
     for (auto id : tour)
     {
         auto length = dt.lookup_length(id, next[id]);
@@ -47,7 +48,7 @@ int main(int argc, char** argv)
     Optimizer optimizer(dt);
     auto prev_length = verify::tour_length(segments, dt);
     std::cout << "Initial tour length: " << prev_length << std::endl;
-    int iteration{0};
+    int iteration{1};
     primitives::length_t improvement{1};
     constexpr bool debug_mode{false};
     constexpr int print_period{10};

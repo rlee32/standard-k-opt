@@ -9,16 +9,14 @@
 #include <algorithm>
 #include <iterator>
 #include <ostream>
-#include <unordered_set>
 #include <vector>
 
 class Optimizer
 {
-    using SegmentContainer = std::unordered_set<Segment, Segment::Hash>;
 public:
     Optimizer(const DistanceTable& dt) : m_dt(dt) {}
 
-    void find_best(const SegmentContainer& segments);
+    void find_best(const Segment::Container& segments);
 
     const SearchState& best() const { return m_best; }
 
@@ -29,7 +27,7 @@ private:
     SearchState m_best;
     SearchState m_current;
 
-    void find_best(SegmentContainer::const_iterator it, const SegmentContainer::const_iterator end);
+    void find_best(Segment::Container::const_iterator it, const Segment::Container::const_iterator end);
     void check_best();
 };
 
