@@ -51,7 +51,13 @@ void Optimizer::check_best()
         return;
     }
     m_current.improvement = m_current.length - new_length;
-    if (m_current.improvement > m_best.improvement)
+    // Using >= or > below can make a difference in results!
+    // It is possible to get multiple swap configurations with the same improvement.
+    // All are qualitatively equivalent choices, but still can lead to divergence in later results.
+    // The configuration chosen depends on the search path.
+    // If >, the first configuration will be kept.
+    // If >=, the last configuration will be chosen.
+    if (m_current.improvement >= m_best.improvement)
     {
         m_best = m_current;
     }
