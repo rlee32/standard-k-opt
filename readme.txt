@@ -1,6 +1,6 @@
 C++ implementation of standard 2-opt hill-climbing for the traveling salesman problem (TSP).
-
-This implementation is readily extensible to k-opt, and could be slightly simplified for 2-opt only.
+This implementation is actually currently capable of 3-opt, and could be slightly simplified for 2-opt only.
+This repo will be renamed standard-k-opt.
 
 Input files are assumed to be in TSPLIB format.
 
