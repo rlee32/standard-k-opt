@@ -3,6 +3,7 @@
 PointSequence::PointSequence(const std::vector<primitives::point_id_t>& sequence)
 {
     m_adjacents.resize(sequence.size());
+    m_sequence_ids.resize(sequence.size());
     for (auto& a : m_adjacents)
     {
         a = {primitives::InvalidPoint, primitives::InvalidPoint};
@@ -20,11 +21,14 @@ PointSequence::PointSequence(const std::vector<primitives::point_id_t>& sequence
 void PointSequence::update_next()
 {
     primitives::point_id_t current{0};
+    primitives::point_id_t sequence_id{0};
+    m_sequence_ids[current] = sequence_id;
     m_next[current] = m_adjacents[current].front();
     do
     {
         auto prev = current;
         current = m_next[current];
+        m_sequence_ids[current] = ++sequence_id;
         m_next[current] = get_other(current, prev);
     } while (current != 0); // cycle condition.
 }

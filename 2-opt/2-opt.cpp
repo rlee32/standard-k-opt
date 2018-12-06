@@ -45,45 +45,57 @@ int main(int argc, char** argv)
         segments.insert({id, next[id], length});
     }
     // Hill climbing optimization loop.
-    Optimizer optimizer(dt);
+    Optimizer optimizer(dt, point_sequence.sequence_ids());
+    const auto n = point_set.x().size();
+    std::cout << "Expecting " << (n - 1) * (n - 2) / 2 - 1 << " checks per 2-opt best-improvement iteration.\n";
+    std::cout << "Starting hill-climbing optimization:\n";
     auto prev_length = verify::tour_length(segments, dt);
     std::cout << "Initial tour length: " << prev_length << std::endl;
+    primitives::length_t cycle_improvement{0};
     int iteration{1};
-    primitives::length_t improvement{1};
-    constexpr bool debug_mode{false};
-    constexpr int print_period{1};
-    std::cout << "Starting hill-climbing optimization:\n";
-    const auto n = point_set.x().size();
-    std::cout << "Expecting " << (n -1) * (n - 2) / 2 - 1 << " checks per best-improvement iteration.\n";
-    while (improvement > 0)
+    do
     {
-        optimizer.find_best(segments);
-        point_sequence.new_tour(segments, optimizer.best().segments, optimizer.best().new_segments);
-        if (debug_mode)
+        cycle_improvement = 0;
+        for (size_t k{2}; k < 4; ++k)
         {
-            std::cout << optimizer << std::endl;
-            if (verify::valid_cycle(segments))
+            optimizer.k(k);
+            primitives::length_t improvement{0};
+            do
             {
-                std::cout << "Tour is still a valid cycle." << std::endl;
-            }
-            else
-            {
-                std::cout << "ERROR: tour has become invalid!" << std::endl;
-                break;
-            }
+                optimizer.find_best(segments);
+                point_sequence.new_tour(segments, optimizer.best().segments, optimizer.best().new_segments);
+                constexpr bool debug_mode{false};
+                if (debug_mode)
+                {
+                    std::cout << optimizer << std::endl;
+                    if (verify::valid_cycle(segments))
+                    {
+                        std::cout << "Tour is still a valid cycle." << std::endl;
+                    }
+                    else
+                    {
+                        std::cout << "ERROR: tour has become invalid!" << std::endl;
+                        cycle_improvement = -1;
+                        break;
+                    }
+                }
+                constexpr int print_period{1};
+                if (iteration % print_period == 0)
+                {
+                    auto current_length = verify::tour_length(segments, dt);
+                    improvement = prev_length - current_length;
+                    cycle_improvement += improvement;
+                    std::cout << "Iteration " << iteration
+                        << " final tour length: " << current_length
+                        << " (improvement since last update: " << improvement << ")\n";
+                    prev_length = current_length;
+                }
+                ++iteration;
+            } while (improvement > 0);
+            std::cout << k << "-optimal solution found." << std::endl;
         }
-        if (iteration % print_period == 0)
-        {
-            auto current_length = verify::tour_length(segments, dt);
-            improvement = prev_length - current_length;
-            std::cout << "Iteration " << iteration
-                << " final tour length: " << current_length
-                << " (improvement since last update: " << improvement << ")\n";
-            prev_length = current_length;
-        }
-        ++iteration;
-    }
-    if (improvement == 0)
+    } while (cycle_improvement > 0);
+    if (cycle_improvement == 0)
     {
         std::cout << "Local optimum reached." << std::endl;
     }
