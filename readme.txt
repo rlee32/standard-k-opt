@@ -4,6 +4,8 @@ This implementation is readily extensible to k-opt, and could be slightly simpli
 
 Input files are assumed to be in TSPLIB format.
 
+Best-improvement 2-opt iterations require ((N - 1) * (N - 2) / 2 - 1) checks.
+
 Compilation:
 1. Make sure "CXX" in "2-opt/makefile" is set to the desired compiler.
 2. Run "make" in "2-opt/".

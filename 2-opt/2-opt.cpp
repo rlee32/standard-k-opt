@@ -50,8 +50,11 @@ int main(int argc, char** argv)
     std::cout << "Initial tour length: " << prev_length << std::endl;
     int iteration{1};
     primitives::length_t improvement{1};
-    constexpr bool debug_mode{true};
+    constexpr bool debug_mode{false};
     constexpr int print_period{1};
+    std::cout << "Starting hill-climbing optimization:\n";
+    const auto n = point_set.x().size();
+    std::cout << "Expecting " << (n -1) * (n - 2) / 2 - 1 << " checks per best-improvement iteration.\n";
     while (improvement > 0)
     {
         optimizer.find_best(segments);

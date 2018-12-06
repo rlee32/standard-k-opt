@@ -26,6 +26,7 @@ private:
     const size_t m_k{2}; // as in k-opt.
     SearchState m_best;
     SearchState m_current;
+    int m_calls{0};
 
     void find_best(Segment::Container::const_iterator it, const Segment::Container::const_iterator end);
     void check_best();

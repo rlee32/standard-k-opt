@@ -3,11 +3,13 @@
 void Optimizer::find_best(const Segment::Container& segments)
 {
     m_best = SearchState();
+    m_calls = 0;
     for (auto it = segments.cbegin(); it != segments.cend(); ++it)
     {
         m_current = SearchState(*it);
         find_best(std::next(it), segments.cend());
     }
+    std::cout << m_k << "-opt checks: " << m_calls << std::endl;
 }
 
 void Optimizer::find_best(Segment::Container::const_iterator it, const Segment::Container::const_iterator end)
@@ -35,6 +37,7 @@ void Optimizer::find_best(Segment::Container::const_iterator it, const Segment::
 
 void Optimizer::check_best()
 {
+    ++m_calls;
     // TODO: implement for m_k > 2.
     const auto& s = m_current.segments;
     auto& ns = m_current.new_segments;
@@ -57,7 +60,7 @@ void Optimizer::check_best()
     // The configuration chosen depends on the search path.
     // If >, the first configuration will be kept.
     // If >=, the last configuration will be chosen.
-    if (m_current.improvement >= m_best.improvement)
+    if (m_current.improvement > m_best.improvement)
     {
         m_best = m_current;
     }
