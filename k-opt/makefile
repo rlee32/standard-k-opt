@@ -5,13 +5,13 @@ CXX_FLAGS += -O3 -ffast-math # optimization.
 CXX_FLAGS += -g # debugging.
 CXX_FLAGS += -I./ # include paths.
 
-SRCS = 2-opt.cpp PointSequence.cpp Optimizer.cpp \
+SRCS = k-opt.cpp PointSequence.cpp Optimizer.cpp \
     fileio/PointSet.cpp fileio/Tour.cpp
 
 %.o: %.cpp; $(CXX) $(CXX_FLAGS) -o $@ -c $<
 
 OBJS = $(SRCS:.cpp=.o)
 
-all: $(OBJS); $(CXX) $^ -o 2-opt.out
+all: $(OBJS); $(CXX) $^ -o k-opt.out
 
-clean: ; rm -rf 2-opt.out $(OBJS) *.dSYM
+clean: ; rm -rf k-opt.out $(OBJS) *.dSYM
