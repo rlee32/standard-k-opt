@@ -7,11 +7,11 @@ Input files are assumed to be in TSPLIB format.
 Best-improvement 2-opt iterations require ((N - 1) * (N - 2) / 2 - 1) checks.
 
 Compilation:
-1. Make sure "CXX" in "2-opt/makefile" is set to the desired compiler.
-2. Run "make" in "2-opt/".
+1. Make sure "CXX" in "k-opt/makefile" is set to the desired compiler.
+2. Run "make" in "k-opt/".
 
 Running:
-1. Run "./2-opt.out" for usage details.
+1. Run "./k-opt.out" for usage details.
 
 Style notes:
 1. Namespaces follow directory structure. If an entire namespace is in a single header file, the header file name will be the namespace name.
