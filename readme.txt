@@ -1,5 +1,5 @@
 C++ implementation of standard k-opt hill-climbing for the traveling salesman problem (TSP).
-This implementation is currently capable of 2- and 3-opt.
+This implementation is currently capable of 2-, 3-, and 4-opt.
 Time complexity is O(n^k). See my other repo, fast-k-opt, for a much superior O(n * log(n) ^ (k - 1)) implementation.
 
 Input files are assumed to be in TSPLIB format.
