@@ -42,6 +42,11 @@ void Optimizer::check_best()
     std::sort(std::begin(ordered_segments)
         , std::end(ordered_segments)
         , [&m_sequence_ids = m_sequence_ids](const Segment& a, const Segment& b) { return m_sequence_ids[a.a] < m_sequence_ids[b.a]; });
+    auto& new_segments = m_current.new_segments;
+    if (new_segments.size() != m_k)
+    {
+        new_segments.resize(m_k);
+    }
     switch (m_k)
     {
         case 2:
@@ -52,7 +57,11 @@ void Optimizer::check_best()
         {
             check_best_3opt(ordered_segments);
         } break;
-        // TODO: implement for m_k > 3.
+        case 4:
+        {
+            opt::check_best_4opt(ordered_segments, m_current, m_best, m_dt);
+        } break;
+        // TODO: implement for higher m_k.
         default:
         {
         } break;

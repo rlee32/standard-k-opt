@@ -4,6 +4,7 @@
 
 #include "DistanceTable.h"
 #include "SearchState.h"
+#include "opt/four.h"
 #include "primitives.h"
 
 #include <algorithm>

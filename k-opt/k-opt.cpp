@@ -56,7 +56,7 @@ int main(int argc, char** argv)
     do
     {
         cycle_improvement = 0;
-        for (size_t k{2}; k < 4; ++k)
+        for (size_t k{2}; k < 5; ++k)
         {
             optimizer.k(k);
             primitives::length_t improvement{0};
