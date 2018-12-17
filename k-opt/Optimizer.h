@@ -5,6 +5,7 @@
 #include "DistanceTable.h"
 #include "SearchState.h"
 #include "opt/four.h"
+#include "opt/three.h"
 #include "primitives.h"
 
 #include <algorithm>
@@ -36,7 +37,6 @@ private:
     void find_best(Segment::Container::const_iterator it, const Segment::Container::const_iterator end);
     void check_best();
     void check_best_2opt(const std::vector<Segment>& ordered_segments);
-    void check_best_3opt(const std::vector<Segment>& ordered_segments);
 };
 
 inline std::ostream& operator<<(std::ostream& out, const Optimizer& optimizer)
